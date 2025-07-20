@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday card</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        .ballon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 150px;
+            z-index: -1;
+        }
+
+        .cat {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 150px;
+            z-index: -1;
+        }
+
+        .container {
+            perspective: 2500px;
+            width: 380px;
+            height: 500px;
+        }
+
+        .birthdayCard {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: all 0.8s ease;
+            cursor: pointer;
+        }
+
+        .birthdayCard:hover {
+            transform: rotateY(180deg);
+        }
+
+        .cardFront, .cardInside {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+        }
+
+        .cardFront {
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .front-text {
+            text-align: center;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .happy {
+            font-size: 32px;
+            margin: 0;
+        }
+
+        .bday {
+            font-size: 60px;
+            margin: 10px 0;
+        }
+
+        .toyou {
+            font-size: 28px;
+            margin: 0;
+        }
+
+        .wrap-deco, .wrap-decoTwo {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .decorations, .decorationsTwo, .decorationsThree {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+        }
+
+        .decorations {
+            width: 60px;
+            height: 60px;
+            bottom: 60px;
+            left: 30px;
+        }
+
+        .decorationsTwo {
+            width: 100px;
+            height: 100px;
+            top: 40px;
+            right: 40px;
+        }
+
+        .decorationsThree {
+            width: 80px;
+            height: 80px;
+            bottom: 80px;
+            right: 60px;
+        }
+
+        .plate {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin-top: 30px;
+        }
+
+        .cake {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 60px;
+            background: linear-gradient(to bottom, #f8d486, #f5a623);
+            border-radius: 10px 10px 0 0;
+        }
+
+        .flame {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 40px;
+            background: linear-gradient(to top, #ff7800, #ffef00);
+            border-radius: 50% 50% 20% 20%;
+            box-shadow: 0 0 20px #ff7800;
+        }
+
+        .cardInside {
+            background: linear-gradient(45deg, #fff, #fce4ec);
+            transform: rotateY(180deg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .img {
+            width: 100%;
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .bdyboy {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .confetti {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .inside-text {
+            text-align: center;
+            color: #ff69b4;
+            margin-bottom: 15px;
+        }
+
+        .wishes {
+            text-align: center;
+            color: #555;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .wishes p {
+            margin: 5px 0;
+        }
+
+        .name {
+            color: #ff69b4;
+            font-weight: bold;
+            margin-top: 15px !important;
+        }
+
+        .ajith-mark {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            font-size: 16px;
+            color: #fff;
+            background: rgba(255, 105, 180, 0.2);
+            padding: 6px 12px;
+            border: 2px solid #ff69b4;
+            border-radius: 12px;
+            z-index: 9999;
+            animation: glow 2s ease-in-out infinite, slide-in 1.5s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                box-shadow: 0 0 5px #ff69b4, 0 0 10px #ff69b4, 0 0 15px #ff1493;
+            }
+            50% {
+                box-shadow: 0 0 10px #ff69b4, 0 0 20px #ff69b4, 0 0 30px #ff1493;
+            }
+        }
+
+        @keyframes slide-in {
+            0% {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        /* Audio player styling */
+        .audio-player {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 12px 15px;
+            border-radius: 25px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+        
+        .audio-player button {
+            background: #ff69b4;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            margin-right: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .audio-player button:hover {
+            transform: scale(1.1);
+            background: #ff1493;
+        }
+        
+        .song-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        #songTitle {
+            font-weight: bold;
+            color: #ff69b4;
+            font-size: 14px;
+        }
+        
+        .song-instruction {
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Audio player -->
+    <div class="audio-player">
+        <audio id="birthdaySong" loop>
+            <source src="cupid.mp3" type="audio/mp3">
+            Your browser does not support the audio element.
+        </audio>
+        <button id="playPauseBtn">▶</button>
+        <div class="song-info">
+            <span id="songTitle">Cupid💖</span>
+            <span class="song-instruction">Click to play music</span>
+        </div>
+    </div>
+
+    <img src="ZUiY.gif" alt="stars" class="star">
+    <img src="5l03.gif" alt="ballon" class="ballon">
+
+    <!-- 🎉 Made by Ajith Badge -->
+    <div class="ajith-mark">Made by Ajith 💖</div>
+
+    <div class="container">
+        <div class="birthdayCard">
+            <div class="cardFront">
+                <div class="front-text">
+                    <h3 class="happy">HAPPY</h3>
+                    <h2 class="bday">BIRTHDAY</h2>
+                    <h3 class="toyou">to you!</h3>
+                </div>
+                <div class="wrap-deco">
+                    <div class="decorations"></div>
+                    <div class="decorationsTwo"></div>
+                </div>
+                <div class="wrap-decoTwo">
+                    <div class="decorations"></div>
+                    <div class="decorationsThree"></div>
+                </div>
+                <div class="plate">
+                    <div class="cake"></div>
+                    <div class="flame"></div>
+                </div>
+            </div>
+            <div class="cardInside">
+                <div class="img">
+                    <img src="cute-anime-girl-in-meow-post-uptxxcxl4h2zoe9r.jpg" alt="Brotherpic" class="bdyboy">
+                    <img src="6ob.gif" alt="confetti" class="confetti">
+                </div>
+                <div class="inside-text">
+                    <h3 class="happy">HAPPY</h3>
+                    <h2 class="bday">BIRTHDAY</h2>
+                    <h3 class="toyou">to you!</h3>
+                </div>
+                <div class="wishes">
+                    <p>Dear Madam jii,</p>
+                    <p>Happy birthday!! I hope your day is filled with lots of love and laughter! May all of your
+                        birthday wishes come true.</p>
+                    <p class="name">~ Your AJITH❤️</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <img src="4SHX.gif" alt="cat" class="cat">
+
+    <script>
+        // Audio player functionality
+        const audio = document.getElementById('birthdaySong');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        
+        // Toggle play/pause when button is clicked
+        playPauseBtn.addEventListener('click', function() {
+            // First interaction will allow audio to play
+            if (audio.paused) {
+                audio.play()
+                    .then(() => {
+                        playPauseBtn.textContent = '❚❚';
+                    })
+                    .catch(error => {
+                        console.log("Playback failed:", error);
+                        alert("Please click 'Allow' if browser asks for audio permission");
+                    });
+            } else {
+                audio.pause();
+                playPauseBtn.textContent = '▶';
+            }
+        });
+
+        // Update button when audio starts/stops
+        audio.addEventListener('play', function() {
+            playPauseBtn.textContent = '❚❚';
+        });
+        
+        audio.addEventListener('pause', function() {
+            playPauseBtn.textContent = '▶';
+        });
+    </script>
+</body>
+</html>
